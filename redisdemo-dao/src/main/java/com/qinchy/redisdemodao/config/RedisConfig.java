@@ -20,7 +20,12 @@ import java.lang.reflect.Method;
 @Configuration
 @EnableCaching
 public class RedisConfig extends CachingConfigurerSupport {
-    
+
+    /**
+     * 生成key的策略
+     *
+     * @return
+     */
     @Bean
     public KeyGenerator keyGenerator() {
         return new KeyGenerator() {
@@ -37,6 +42,12 @@ public class RedisConfig extends CachingConfigurerSupport {
         };
     }
 
+    /**
+     * 管理缓存
+     *
+     * @param redisTemplate
+     * @return
+     */
     @SuppressWarnings("rawtypes")
     @Bean
     public CacheManager cacheManager(RedisTemplate redisTemplate) {
@@ -45,7 +56,12 @@ public class RedisConfig extends CachingConfigurerSupport {
         //rcm.setDefaultExpiration(60);//秒
         return rcm;
     }
-    
+
+    /**
+     * RedisTemplate配置
+     * @param factory
+     * @return
+     */
     @Bean
     public RedisTemplate<String, String> redisTemplate(RedisConnectionFactory factory) {
         StringRedisTemplate template = new StringRedisTemplate(factory);
@@ -54,7 +70,7 @@ public class RedisConfig extends CachingConfigurerSupport {
         om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
         om.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
         jackson2JsonRedisSerializer.setObjectMapper(om);
-        template.setValueSerializer(jackson2JsonRedisSerializer);
+        template.setValueSerializer(jackson2JsonRedisSerializer);   //如果key是String 需要配置一下StringSerializer,不然key会乱码 /XX/XX
         template.afterPropertiesSet();
         return template;
     }
