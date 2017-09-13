@@ -52,4 +52,6 @@
 		</dependency>
 	</dependencies>
 
+	<!--父pom中不要添加build节点，否则所有的module都按照springboot来编译打包了-->
+	<!--而并不是所有的module都是springboot的module，只有redisdemo-biz是springboot的module-->
 </project>
