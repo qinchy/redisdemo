@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+//import java.util.ArrayList;
+//import java.util.List;
+
 
 @RestController
 @RequestMapping("/caches")
@@ -31,6 +34,8 @@ public class CacheController {
     public String setObject(@RequestParam(value = "username") String username, @RequestParam(value = "age") Integer age) {
         log.info("进入了setObject方法");
         User user = new User(username, age);
+//        List<User> users = new ArrayList<User>();
+//        users.add(user);
         boolean setFlag = redisUtils.set(username, user);
         log.info("set方法返回值：" + setFlag);
         Object o = redisUtils.get(username);
